@@ -2,13 +2,6 @@ const request = require('request');
 
 const configuration = require('./config/config.js');
 
-/**
- * @param  {Null | Object} err
- * @param  {Object} res 
- * @param  {Object} body 
- * @return {Boolean} true if the request should be retried
- */
-
 console.log('Process.env.port: ', process.env.port);
 
 const apiEndpoint = configuration.secretConfig.linkGet;
