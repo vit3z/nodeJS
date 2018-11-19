@@ -1,0 +1,105 @@
+let https = require('https');
+let lodash = require('lodash');
+let config = require('config');
+let request = require('request');
+let requestRetry = require('requestretry');
+let doWork = require('./doWork');
+
+let apiEndpoint = 'Movies.link';
+let retryAttempts = 'retryConfig.retryAttempts';
+let delayBetweenAttempts = 'retryConfig.delayBetweenAttempts';
+
+/**
+ * @param  {Null | Object} err
+ * @param  {Object} res 
+ * @param  {Object} body 
+ * @return {Boolean} true if the request should be retried
+ */
+
+function myRetryStrategy(err, res, body){
+    /* CALLS RETRY STRATEGY REGARDLESS OF CORRECTNESS OF URL */
+    /* if(requestRetry.RetryStrategies.HTTPOrNetworkError) {
+        return requestRetry.RetryStrategies.HTTPOrNetworkError;
+    }
+    else if (res.statusCode  === 105) {
+        return res.statusCode;
+    } 
+    else {
+        return err;
+    } */
+
+    /* THIS GETS CALLED REGARDLESS IF CORRECT LINK OR NOT */
+    /* if(err || requestRetry.RetryStrategies.HTTPOrNetworkError || response.statusCode === 404){
+        err = new Error(["Glupo sranje ne radi"]);
+        console.log("Error: ", err);
+        return err;
+    } */
+    
+    if(err || res.statusCode === 404) {
+        console.log("err || res.statusCode === 404: ", err || res.statusCode === 404);
+        return new Error("Glupo sranje ne radi");
+    }
+    //return err || res.statusCode === 404; //Kinda works, but doesn't return the error in the main method
+}
+
+requestRetry({ 
+        url: config.get(apiEndpoint), 
+        json: true, 
+        maxAttempts: config.get(retryAttempts), 
+        retryDelay: config.get(delayBetweenAttempts), 
+        //retryStrategy: requestRetry.RetryStrategies.HTTPOrNetworkError
+        retryStrategy: myRetryStrategy
+    }, (err, res, body) => {
+        error = myRetryStrategy(err, res, body);
+    if (error) { 
+        return console.log("In if: ", error); 
+    }
+    if(res) {
+        console.log('The number of request attempts: ', res.attempts);
+        //console.log("res: ", res); //Response from the server (Sockets etc)
+        console.log("res code: ", res.statusCode);
+        console.log("Body: ", body); //Information about what is contained in the link
+    }
+});
+
+/* request(config.get(apiEndpoint), {json: true}, (err, res, body) => {
+    if (err) { return console.log(err); }
+  console.log("res: ", res); //Response from the server (Sockets etc)
+
+  console.log("Body: ", body); //Information about what is contained in the link
+}) */
+
+
+/* console.log('HTTPS:///////////');
+https.get('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY', (resp) => {
+  let data = '';
+
+  // A chunk of data has been recieved.
+  resp.on('data', (chunk) => {
+    data += chunk;
+  });
+
+  // The whole response has been received. Print out the result.
+  resp.on('end', () => {
+    console.log(JSON.parse(data).explanation);
+  });
+
+}).on("error", (err) => {
+  console.log("Error: " + err.message);
+}); */
+
+
+/* console.log('REQUEST:///////////');
+request('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY', { json: true }, (err, res, body) => {
+  if (err) { return console.log(err); }
+  console.log("res: ", res); //Response from the server (Sockets etc)
+
+  console.log("Body: ", body); //Information about what is contained in the link
+  console.log(body.url);
+  console.log(body.explanation);
+}); 
+
+http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end('Hello World!');
+}).listen(8080); */

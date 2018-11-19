@@ -1,0 +1,16 @@
+{
+    "dev1": {
+        "linkGet": "http://www.om2dbapi.com/?t=Predator&apikey=9eba64aa",
+        "linkPost": "http://mockbin.com/request",
+        "retryAttempts": 4,
+        "delayBetweenAttempts": 2000,
+        "workerTimer": 6000
+    },
+    "test1": {
+        "linkGet": "http://www.omdbapi.com/?t=Predator&apikey=9eba64aa",
+        "linkPost": "http://mockbin.com/request",
+        "retryAttempts": 2,
+        "delayBetweenAttempts": 2000,
+        "workerTimer": 200
+    }
+}
