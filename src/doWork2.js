@@ -1,5 +1,4 @@
-let requestRetry = require('requestretry');
-let request = require('request');
+const request = require('request');
 
 const configuration = require('./config/config.js');
 
@@ -12,11 +11,11 @@ const configuration = require('./config/config.js');
 
 console.log('Process.env.port: ', process.env.port);
 
-let apiEndpoint = configuration.secretConfig.linkGet;
-let postEndpoint = configuration.secretConfig.linkPost;
-let retryAttempts = configuration.secretConfig.retryAttempts;
-let delayBetweenAttempts = configuration.secretConfig.delayBetweenAttempts;
-let workerTime = configuration.secretConfig.workerTimer;
+const apiEndpoint = configuration.secretConfig.linkGet;
+const postEndpoint = configuration.secretConfig.linkPost;
+const retryAttempts = configuration.secretConfig.retryAttempts;
+const delayBetweenAttempts = configuration.secretConfig.delayBetweenAttempts;
+const workerTime = configuration.secretConfig.workerTimer;
 
 console.log('+++++++++++c++++++++++++++++++++++++++++++++++');
 console.log("sConfig: ", configuration.secretConfig);
@@ -83,7 +82,7 @@ function customRetry(err, res) {
 }
 
 /* REST API - POST */
-requestRetry.post({
+request.post({
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     url: postEndpoint,
     body: "mes=heydude"
@@ -96,4 +95,4 @@ requestRetry.post({
     console.log('body', body);
 });
 
-module.exports = requestRetry;
+module.exports = request;
