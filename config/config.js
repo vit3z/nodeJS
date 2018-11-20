@@ -1,11 +1,5 @@
-const _ = require('lodash');
+let config = require('config');
 
-const config = require('./default.json');
-const environment = process.env.NODE_ENV || 'dev1';
-const environmentConfig = config[environment];
+const data = config.get(process.env.NODE_ENV || 'dev1');
 
-let secretConfig = environmentConfig;
-
-console.log("Configuration: ", secretConfig);
-
-module.exports.secretConfig = secretConfig;
+module.exports.data = data;
