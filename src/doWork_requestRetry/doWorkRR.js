@@ -1,6 +1,6 @@
 const requestRetry = require('requestretry');
 
-const configuration = require('./config/config.js');
+const configuration = require('../../config/config');
 
 console.log('Process.env.port: ', process.env.port);
 
