@@ -1,47 +1,34 @@
 const helper = require('./helper');
 const requestRetry = require('requestretry');
+let config = require('config');
 
-const configuration = require('../../config/config');
-const apiEndpoint = configuration.data.linkGet;
-const retryAttempts = configuration.data.retryAttempts;
-const delayBetweenAttempts = configuration.data.delayBetweenAttempts;
-const workerTime = configuration.data.workerTimer;
+const data = config.get(process.env.NODE_ENV || 'dev1');
 
-console.log('+++++++++++c++++++++++++++++++++++++++++++++++');
-console.log("sConfig: ", configuration.data);
-console.log('+++++++++++++++++++++++++++++++++++++++++++++');
+const apiEndpoint = data.linkGet;
+const retryAttempts = data.retryAttempts;
+const delayBetweenAttempts = data.delayBetweenAttempts;
 
 /* REST API - GET */
-let i = 0;
-let interVal = setInterval(function () {
-    console.log('******************************************************');
-    console.log('Iteration no. ', i);
-
-    requestRetry({
-        url: apiEndpoint,
-        json: true,
-        maxAttempts: retryAttempts,
-        retryDelay: delayBetweenAttempts,
-        retryStrategy: helper.myRetryStrategy
-    }, (err, res, body) => {
-        error = helper.myRetryStrategy(err, res, body);
-        if (error) {
-            return console.log("In if: ", error);
-        }
-        if (res) {
-            console.log('The number of request attempts: ', res.attempts);
-            console.log("res code: ", res.statusCode); //Response code from the server (Sockets etc)
-            console.log("Body: ", body); //Information about what is contained in the link
-            return body;
-        }
-    });
-    i++;
-    if (i === 1) {
-        clearInterval(interVal);
+requestRetry({
+    url: apiEndpoint,
+    json: true,
+    maxAttempts: retryAttempts,
+    retryDelay: delayBetweenAttempts,
+    retryStrategy: helper.myRetryStrategy
+}, (err, res, body) => {
+    error = helper.myRetryStrategy(err, res, body);
+    if (error) {
+        return console.log("In if: ", error);
     }
-}, workerTime);
+    if (res) {
+        console.log('The number of request attempts: ', res.attempts);
+        console.log("res code: ", res.statusCode); //Response code from the server (Sockets etc)
+        console.log("Body: ", body); //Information about what is contained in the link
+        return body;
+    }
+});
 
-const postEndpoint = configuration.data.linkPost;
+const postEndpoint = data.linkPost;
 /* REST API - POST */
 requestRetry.post({
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
