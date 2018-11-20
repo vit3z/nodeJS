@@ -2,7 +2,7 @@ const helper = require('./helper');
 const requestRetry = require('requestretry');
 let config = require('config');
 
-const data = config.get(process.env.NODE_ENV || 'dev1');
+const data = config.get('configuration');
 
 const apiEndpoint = data.linkGet;
 const retryAttempts = data.retryAttempts;
