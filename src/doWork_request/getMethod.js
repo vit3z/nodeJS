@@ -17,16 +17,16 @@ while(iterator1 < 5){
                 json: true
             }, (err, res, body) => {
                 if(res.statusCode != 200) {
-                        try{
-                            customRetry(err, res);
-                            console.log("potentialErr: ", err);
-                        }
-                        catch (err) {
-                                console.log("----------------------------- InterVal" + i + " -----------------------------");
-                                setTimeout(function(){ console.log("breakTimes"); }, 3000);
-                                brokenLink=true;
-                                return console.log("Error found: ", err);
-                        }
+                    try{
+                        customRetry(err, res);
+                        console.log("potentialErr: ", err);
+                    }
+                    catch (err) {
+                        console.log("----------------------------- InterVal" + i + " -----------------------------");
+                        setTimeout(function(){ console.log("breakTimes"); }, 3000);
+                        brokenLink=true;
+                        return console.log("Error found: ", err);
+                    }
                 }
                 console.log("For loop: ", retry);
                 if (err===null) {
