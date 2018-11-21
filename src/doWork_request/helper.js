@@ -1,12 +1,11 @@
- /* Custom retry method */
- function customRetry(err, res, retry) {
-    console.log("")
-    console.log("Retry no. ", retry);
+/* Custom retry method */
+function customRetry(err, res, retry) {
+    console.log('');
+    console.log('Retry no. ', retry);
     if (err || res.statusCode === 404) {
-        isThereAnError = true;
-        throw "Glupo sranje ne radi";
+        throw 'Glupo sranje ne radi';
     } else {
-        isThereAnError = false;
+        let isThereAnError = false;
         return isThereAnError;
     }
 }

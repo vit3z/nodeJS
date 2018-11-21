@@ -16,14 +16,14 @@ requestRetry({
     retryDelay: delayBetweenAttempts,
     retryStrategy: helper.myRetryStrategy
 }, (err, res, body) => {
-    error = helper.myRetryStrategy(err, res, body);
+    let error = helper.myRetryStrategy(err, res, body);
     if (error) {
-        return console.log("In if: ", error);
+        return console.log('In if: ', error);
     }
     if (res) {
         console.log('The number of request attempts: ', res.attempts);
-        console.log("res code: ", res.statusCode); //Response code from the server (Sockets etc)
-        console.log("Body: ", body); //Information about what is contained in the link
+        console.log('res code: ', res.statusCode); //Response code from the server (Sockets etc)
+        console.log('Body: ', body); //Information about what is contained in the link
         return body;
     }
 });
@@ -33,12 +33,12 @@ const postEndpoint = data.linkPost;
 requestRetry.post({
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     url: postEndpoint,
-    body: "mes=heydude"
+    body: 'mes=heydude'
 }, function (error, response, body) {
     if (error) {
         console.log(error);
         return error;
-    };
+    }
     console.log('statusCode: ', response.statusCode);
     console.log('body', body);
 });

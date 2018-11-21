@@ -10,8 +10,8 @@ const retryAttempts = data.retryAttempts;
 const delayBetweenAttempts = data.delayBetweenAttempts;
 let retry = 0;
 
-interVal2 = setInterval(function() {
-    requested = request.get({
+let interVal2 = setInterval(function() {
+    request.get({
         url: apiEndpoint,
         json: true
     }, (err, res, body) => {
@@ -20,13 +20,13 @@ interVal2 = setInterval(function() {
                 helper.customRetry(err, res, retry);
             }
             catch (err) {
-                return console.log("Error found: ", err);
+                return console.log('Error found: ', err);
             }
         }
         if (err===null) {
-            console.log("");
-            console.log("res code: ", res.statusCode); //Response code from the server (Sockets etc)
-            console.log("Body: ", body); //Information about what is contained in the link
+            console.log('');
+            console.log('res code: ', res.statusCode); //Response code from the server (Sockets etc)
+            console.log('Body: ', body); //Information about what is contained in the link
             clearInterval(interVal2);
             return body;
         }
@@ -42,12 +42,12 @@ const postEndpoint = data.linkPost;
 request.post({
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     url: postEndpoint,
-    body: "mes=heydude"
+    body: 'mes=heydude'
 }, function (error, response, body) {
     if (error) {
         console.log(error);
         return error;
-    };
+    }
     console.log('statusCode: ', response.statusCode);
     console.log('body', body);
 });
