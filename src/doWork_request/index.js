@@ -22,8 +22,7 @@ let interVal2 = setInterval(function() {
             catch (err) {
                 return console.log('Error found: ', err);
             }
-        }
-        if (err===null) {
+        } else {
             console.log('');
             console.log('res code: ', res.statusCode); //Response code from the server (Sockets etc)
             console.log('Body: ', body); //Information about what is contained in the link
@@ -43,11 +42,12 @@ request.post({
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     url: postEndpoint,
     body: 'mes=heydude'
-}, function (error, response, body) {
+}, (error, response, body) => {
     if (error) {
         console.log(error);
         return error;
+    } else { 
+        console.log('statusCode: ', response.statusCode);
+        console.log('body', body);
     }
-    console.log('statusCode: ', response.statusCode);
-    console.log('body', body);
 });
