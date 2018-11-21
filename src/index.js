@@ -1,3 +1,3 @@
 /* Pick one */
-const doWork = require('./doWork_request');
-//const doWorkRR = require('./doWork_requestRetry');
+require('./doWork_request');
+//require('./doWork_requestRetry');
